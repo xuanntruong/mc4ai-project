@@ -6,4 +6,3 @@ plotly
 matplotlib
 deepface
 opencv
-a
