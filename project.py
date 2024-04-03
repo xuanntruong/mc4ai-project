@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import matplotlib.pyplot as plt
-
+from deepface import DeepFace
 
 df = pd.read_csv('https://raw.githubusercontent.com/hanv81/mc4ai-project-template/main/py4ai-score.csv', index_col=None)
 df.head()
