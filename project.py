@@ -8,6 +8,14 @@ import matplotlib.pyplot as plt
 df = pd.read_csv('https://raw.githubusercontent.com/hanv81/mc4ai-project-template/main/py4ai-score.csv', index_col=None)
 df.head()
 
+  #  Preprocess
+for i in range(1, 11):
+    a = 'S' + str(i)
+    df[a].fillna(0, inplace=True)
+df['BONUS'].fillna(0, inplace=True)
+df['REG-MC4AI'].fillna('N', inplace=True)   # clear none
+
+
 def lop(row):
     if 'CV' in row['CLASS']:
         return 'Văn'
@@ -28,12 +36,13 @@ def lop(row):
     if 'T' in row['CLASS']:
         return 'Toán'
     return 'Khác'
-df['CLASS-GROUP'] = df.apply(lop, axis=1)
+df['CLASS-GROUP'] = df.apply(lop, axis=1) # thêm phân loại lớp chuyên
 
-tab1, tab2, tab3, tab4 = st.tabs(["Danh sách", "Biểu đồ", "Phân nhóm", "Phân loại"])
+  # tạo các tab
+tab1, tab2, tab3, tab4 = st.tabs(["Danh sách", "Biểu đồ", "Phân nhóm", "Phân loại", "xem điểm bằng gương mặt"])
 
 with tab1:
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)  # tạo các ô lựa chọn
 
     with col1:
         gender = None
@@ -41,12 +50,12 @@ with tab1:
         st.write("Giới tính")
         Nam = st.checkbox('Nam')
         Nu = st.checkbox('Nữ')
-        if not Nam:
+        if Nam and Nu:
+            x = 0
+        elif Nu:
             gender = "F"
-        if not Nu:
-            gender = "M"
-        else:
-            x = 0        
+        elif Nam:
+            gender = "M"     
     with col2:
         grade = st.radio("Khối lớp",("Tất cả", "Lớp 10", "Lớp 11", "Lớp 12"), index = None)
         if grade != "Tất cả" and x == 0:
@@ -74,58 +83,60 @@ with tab1:
         else:
             buoi = "C"
 
-    st.write('Lớp chuyên')
+    st.write('Lớp chuyên') # tiêu đề
 
 
-    col1, col2, col3, col4, col5  = st.columns(5)
+    col1, col2, col3, col4, col5  = st.columns(5) # các ô lựa chọn
     with col1:
-        chuyen = []
+        chuyen = ['Văn', 'Toán', 'Lý', 'Hóa', 'Anh', 'Tin', 'Sử Địa','Trung Nhật', 'TH/SN', 'Khác']
         van = st.checkbox('Văn')
         toan = st.checkbox('Toán')
-        if van:
-            chuyen.append('Văn')
-        if toan:
-            chuyen.append('Toán')
+        if not van:
+            chuyen.remove('Văn')
+        if not toan:
+            chuyen.remove('Toán')
     with col2:
         ly = st.checkbox('Lý')
         hoa = st.checkbox('Hóa')
-        if ly:
-            chuyen.append('Lý')
-        if hoa:
-            chuyen.append('Hóa')        
+        if not ly:
+            chuyen.remove('Lý')
+        if not hoa:
+            chuyen.remove('Hóa')        
     with col3:
         anh = st.checkbox('Anh')
         tin = st.checkbox('Tin')
-        if anh:
-            chuyen.append('Anh')
-        if tin:
-            chuyen.append('Tin')
+        if not anh:
+            chuyen.remove('Anh')
+        if not tin:
+            chuyen.remove('Tin')
     with col4:
         sudia = st.checkbox('Sử Địa')
         trungnhat = st.checkbox('Trung Nhật')
-        if sudia:
-            chuyen.append('Sử Địa')
-        if trungnhat:
-            chuyen.append('Trung Nhật')
+        if not sudia:
+            chuyen.remove('Sử Địa')
+        if not trungnhat:
+            chuyen.remove('Trung Nhật')
     with col5:
         th = st.checkbox('TH/SN')
         khac = st.checkbox('Khác')
-        if th:
-            chuyen.append('TH/SN')
-        if khac:
-            chuyen.append('Khác')
-    st.write(chuyen[0])
-    if x == 2:
-        df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['CLASS'].str.endswith(buoi))]
-    elif x == 1:
-        df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['CLASS'].str.endswith(buoi))]
-    elif x == 10:
-        df1 = df[(df['GENDER'] == gender) & (df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['CLASS'].str.endswith(buoi))]
-    st.dataframe(df1)
+        if not th:
+            chuyen.remove('TH/SN')
+        if not khac:
+            chuyen.remove('Khác')
 
+    if x == 2:
+        df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+    elif x == 1:
+        df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+    elif x == 10 and grade != 'Tất cả':
+        df1 = df[(df['GENDER'] == gender) & (df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+    else:
+        df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+
+    st.dataframe(df1)
 with tab2:
    st.header("A dog")
-   st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+   st.image("https://static.streamlit.io/examples/dog.jpg", width=200)  
 
 with tab3:
    st.header("An owl")
