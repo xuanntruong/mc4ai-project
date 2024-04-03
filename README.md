@@ -19,3 +19,4 @@ Phân tích điểm thi|Lê Nguyễn Thanh Huy|30/04/23
 Clustering|Lê Nguyễn Thanh Huy|30/04/23
 Regression|Nguyễn Việt Hà|30/04/23
 Classify|Lê Nguyễn Thanh Huy|30/04/23
+Nhận diện khuôn mặt|Lê Vũ XUân Trường|30/04/23
