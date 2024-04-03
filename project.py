@@ -148,6 +148,7 @@ def danhsach():
                 cola,colb,colc=st.columns(3)
                 with colb:
                     st.write("Vui lòng chọn")
+danhsach()
 with tab2:
    st.header("A dog")
    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
@@ -155,4 +156,4 @@ with tab2:
 with tab3:
    st.header("An owl")
    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
-danhsach()
+
