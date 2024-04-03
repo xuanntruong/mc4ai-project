@@ -39,7 +39,7 @@ def lop(row):
 df['CLASS-GROUP'] = df.apply(lop, axis=1) # thêm phân loại lớp chuyên
 
   # tạo các tab
-tab1, tab2, tab3, tab4 = st.tabs(["Danh sách", "Biểu đồ", "Phân nhóm", "Phân loại", "xem điểm bằng gương mặt"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Danh sách", "Biểu đồ", "Phân nhóm", "Phân loại", "xem điểm bằng gương mặt"])
 
 with tab1:
     col1, col2, col3, col4 = st.columns(4)  # tạo các ô lựa chọn
