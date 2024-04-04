@@ -159,10 +159,39 @@ def danhsach():
                 cola,colb,colc=st.columns(3)
                 with colb:
                     st.write("Vui lòng chọn")
-with tab2:
-   st.header("A dog")
-   st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+def bieudo():           
+    with tab2:
+        tab1_, tab2_ = st.tabs(["Số lượng học sinh", "Điểm"])
+        with tab1_:
+            classes = ['114-C', '114-S', '115-S', '115-C']
+            fig1 = go.Figure(data=[go.Pie(labels=classes, values=[len(df[df['PYTHON-CLASS'] == i]) for i in classes])])
+            fig1.update_layout(title="Theo lớp")
+            st.plotly_chart(fig1)
+            with st.expander("Kết luận:"):
+                st.write('cách sắp xếp số học sinh chia đều ra 2 lớp, 2 buổi(sáng và chiều) là hợp lý, đáp ứng được nhu cầu của học sinh')
 
+            gioitinh = ['F', 'M']
+            fig2 = go.Figure(data=[go.Pie(labels=gioitinh, values=[len(df[df['GENDER'] == i]) for i in gioitinh])])
+            fig2.update_layout(title="Theo giới tính")
+            st.plotly_chart(fig2)
+            with st.expander("Kết luận:"):
+                st.write('Nam quan tâm đến AI nhiều hơn nữ')
+
+            lopchuyen = ['Văn', 'Toán', 'Lý', 'Hóa', 'Anh', 'Tin', 'Sử Địa','Trung Nhật', 'TH/SN', 'Khác']
+            fig3 = go.Figure(data=[go.Pie(labels=lopchuyen, values=[len(df[df['CLASS-GROUP'] == i]) for i in lopchuyen])])
+            fig3.update_layout(title="Theo khối chuyên")
+            st.plotly_chart(fig3)
+            with st.expander("Kết luận:"):
+                st.write('Khối chuyên toán và lớp thường quan tâm tới AI nhiều nhất')
+                st.write('Khối chuyên Trung Nhật ít quan tam tới AI nhất')
+
+    with tab2_:
+        sessions = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'GPA']
+        us_session = st.radio('Điểm từng session', sessions, horizontal = True)
+        for i in sessions:
+            if us_session == i:
+                figg = px.box(df,x = 'PYTHON-CLASS' ,y=i, color="GENDER")
+                st.plotly_chart(figg)
 with tab3:
    st.header("An owl")
    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
