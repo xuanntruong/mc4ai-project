@@ -165,3 +165,30 @@ with tab3:
    st.header("An owl")
    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
 danhsach()
+with tab5:
+    def cosine_similarity(vector_a, vector_b):
+        dot_product = np.dot(vector_a, vector_b)
+
+        norm_a = np.linalg.norm(vector_a)
+        norm_b = np.linalg.norm(vector_b)
+
+        cosine_similarity = dot_product / (norm_a * norm_b)
+
+        return cosine_similarity
+
+    img_file_buffer = st.camera_input("Take a picture")
+    if img_file_buffer is not None:
+        img = Image.open(img_file_buffer)
+        img_array = np.array(img)
+
+    img1 = Image.open("Xtruong.jpg")
+    img1 = np.array(img1)
+
+    def detectface(img):
+        embs = DeepFace.represent(img)
+        face = np.array(embs[0]['embedding'])
+        return face
+    st.write('Độ tự tin', cosine_similarity(detectface(img1), detectface(img_array)))
+    # if cosine_similarity(detectface(img1), detectface(img_array)) >= 0.5:
+    #     df[]
+    st.dataframe(df.iloc[[-1]])
