@@ -1,7 +1,5 @@
 scikit-learn
 streamlit
-pandas
-numpy
 plotly
 matplotlib
 deepface
