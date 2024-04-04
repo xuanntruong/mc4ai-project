@@ -151,7 +151,8 @@ def danhsach():
                     else: 
                         if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
                         else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
-
+                st.write('Số HS: ', len(df1), '(',len(df1[df1['GENDER']== 'M']), 'Nam',len(df1[df1['GENDER']== 'F']),'Nữ' , ')')
+                st.write('GPA: cao nhất', np.max(df1['GPA']), 'thấp nhất', np.min(df1['GPA']), 'trung bình', round(np.mean(df1['GPA']), 1))
                 st.dataframe(df1)
             else:
                 cola,colb,colc=st.columns(3)
