@@ -4,7 +4,8 @@ import numpy as np
 import plotly.express as px
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-
+from deepface import DeepFace
+from PIL import Image
 
 df = pd.read_csv('https://raw.githubusercontent.com/xuanntruong/mc4ai-project/main/dataset.csv', index_col=None)
 df.head()
@@ -168,7 +169,7 @@ def bieudo():
             fig1.update_layout(title="Theo lớp")
             st.plotly_chart(fig1)
             with st.expander("Kết luận:"):
-                st.write('Cách sắp xếp số học sinh chia đều ra 2 lớp, 2 buổi(sáng và chiều) là hợp lý, đáp ứng được nhu cầu của học sinh')
+                st.write('Cách sắp xếp số học sinh chia đều ra 2 phòng (A114 và A115), 2 buổi(sáng và chiều) là hợp lý, đáp ứng được nhu cầu của học sinh')
 
             gioitinh = ['F', 'M']
             fig2 = go.Figure(data=[go.Pie(labels=gioitinh, values=[len(df[df['GENDER'] == i]) for i in gioitinh])])
@@ -192,6 +193,15 @@ def bieudo():
             if us_session == i:
                 figg = px.box(df,x = 'PYTHON-CLASS' ,y=i, color="GENDER")
                 st.plotly_chart(figg)
+                with st.expander("Kết luận:"):
+                    st.write('Nhìn chung học sinh Nam học tốt hơn học sinh Nữ')
+                figg2 = px.box(df,x = 'CLASS-GROUP' ,y=i)
+                st.plotly_chart(figg2)
+                with st.expander("Kết luận:"):
+                    st.write('Khối chuyên tin học đều và giỏi nhất')
+                    st.write('100% các học sinh khối chuyên toán, văn, lý, tin và lớp thường đậu')
+        
+        st.bar_chart(df, x="CLASS-GROUP", y="GPA", color="GENDER")
 with tab3:
    st.header("An owl")
    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
