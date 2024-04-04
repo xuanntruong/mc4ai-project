@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import matplotlib.pyplot as plt
-from deepface import DeepFace
 
 
 df = pd.read_csv('https://raw.githubusercontent.com/hanv81/mc4ai-project-template/main/py4ai-score.csv', index_col=None)
@@ -76,15 +75,16 @@ def danhsach():
             if phong == "A114":
                 phong = '114'
             if phong =="Tất cả":
-                phong = ['114','115']
-                a=1
+                phong = None
             else:
                 phong = '115'
 
         with col4:
-            buoi = st.selectbox("buổi",("Sáng","Chiều"))
+            buoi = st.multiselect("Buổi",("Sáng","Chiều"))
             if buoi == "Sáng":
                 buoi = "S"
+            if buoi == ["Sáng","Chiều"]:
+                buoi = None
             else:
                 buoi = "C"
 
@@ -131,24 +131,32 @@ def danhsach():
         if st.button("Run"):
             if x != -1 and gender is not None and len(chuyen) > 0:
                 if x == 2:
-                    if a==1: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
-                    else: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                    if phong is None: 
+                        if buoi is None: df1 = df[(df['CLASS-GROUP'].isin(chuyen))]
+                        else: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
+                    else: 
+                        if buoi is None: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                        else: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
                 elif x == 1:
-                    if a==1: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
-                    else: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
-                elif x == 10 and grade != 'Tất cả':
-                    if a==1: df1 = df[(df['GENDER'] == gender) & (df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
-                    df1 = df[(df['GENDER'] == gender) & (df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                    if phong is None: 
+                        if buoi is None: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen))]
+                        else: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
+                    else: 
+                        if buoi is None: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                        else: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
                 else:
-                    if a==1: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
-                    else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                    if phong is None: 
+                        if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen))]
+                        else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
+                    else: 
+                        if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                        else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
 
                 st.dataframe(df1)
             else:
                 cola,colb,colc=st.columns(3)
                 with colb:
                     st.write("Vui lòng chọn")
-danhsach()
 with tab2:
    st.header("A dog")
    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
@@ -156,4 +164,4 @@ with tab2:
 with tab3:
    st.header("An owl")
    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
-
+danhsach()
