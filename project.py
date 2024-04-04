@@ -168,7 +168,7 @@ def bieudo():
             fig1.update_layout(title="Theo lớp")
             st.plotly_chart(fig1)
             with st.expander("Kết luận:"):
-                st.write('cách sắp xếp số học sinh chia đều ra 2 lớp, 2 buổi(sáng và chiều) là hợp lý, đáp ứng được nhu cầu của học sinh')
+                st.write('Cách sắp xếp số học sinh chia đều ra 2 lớp, 2 buổi(sáng và chiều) là hợp lý, đáp ứng được nhu cầu của học sinh')
 
             gioitinh = ['F', 'M']
             fig2 = go.Figure(data=[go.Pie(labels=gioitinh, values=[len(df[df['GENDER'] == i]) for i in gioitinh])])
@@ -182,7 +182,7 @@ def bieudo():
             fig3.update_layout(title="Theo khối chuyên")
             st.plotly_chart(fig3)
             with st.expander("Kết luận:"):
-                st.write('Khối chuyên toán và lớp thường quan tâm tới AI nhiều nhất')
+                st.write('Khối chuyên Toán và lớp thường quan tâm tới AI nhiều nhất')
                 st.write('Khối chuyên Trung Nhật ít quan tam tới AI nhất')
 
     with tab2_:
@@ -223,5 +223,5 @@ def xemdiem():
       st.write('Độ tự tin', cosine_similarity(detectface(img1), detectface(img_array)))
       if cosine_similarity(detectface(img1), detectface(img_array)) >= 0.5:
           st.dataframe(df.iloc[[-1]])
-      
+bieudo()
 xemdiem()
