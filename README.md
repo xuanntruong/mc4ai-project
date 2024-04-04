@@ -11,12 +11,12 @@ Trần Tiến Vinh||
 
 ## Các chức năng chính & kế hoạch thực hiện
 
-Chức năng|Người thực hiện|Ngày hoàn thành dự kiến
+Chức năng|Người thực hiện|Quá trình
 -|-|-
-Danh sách học sinh|Trường, Vinh|30/04/23
-Phân tích số lượng học sinh|Trường, Vinh|30/04/23
-Phân tích điểm thi|Trường|30/04/23
-Clustering|Truyền Anh|30/04/23
-Regression|Truyền Anh|30/04/23
-Classify|Truyền Anh|30/04/23
-Nhận diện khuôn mặt|Trường|30/04/23
+Danh sách học sinh|Trường, Vinh|Xong
+Phân tích số lượng học sinh|Trường, Vinh|Xong
+Phân tích điểm thi|Trường|Xong
+Clustering|Truyền Anh|Chưa
+Regression|Truyền Anh|Chưa
+Classify|Truyền Anh|Chưa
+Nhận diện khuôn mặt|Trường|Xong
