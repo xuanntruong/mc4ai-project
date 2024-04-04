@@ -190,7 +190,7 @@ def xemdiem():
           face = np.array(embs[0]['embedding'])
           return face
       st.write('Độ tự tin', cosine_similarity(detectface(img1), detectface(img_array)))
-      # if cosine_similarity(detectface(img1), detectface(img_array)) >= 0.5:
-      #     df[]
-      st.dataframe(df.iloc[[-1]])
+      if cosine_similarity(detectface(img1), detectface(img_array)) >= 0.5:
+          st.dataframe(df.iloc[[-1]])
+      
 xemdiem()
