@@ -14,7 +14,7 @@ for i in range(1, 11):
     a = 'S' + str(i)
     df[a].fillna(0, inplace=True)
 df['BONUS'].fillna(0, inplace=True)
-df['REG-MC4AI'].fillna('N', inplace=True)   # clear none
+df['REG-MC4AI'].fillna('N', inplace=True)   # fill none
 
 
 def lop(row):
