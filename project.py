@@ -247,7 +247,7 @@ def xemdiem():
           return cosine_similarity
     
       def detectface(img): # lấy ra vector mặt
-          embs = DeepFace.represent(img)
+          embs = DeepFace.represent(img, enforce_detection=False)
           face = np.array(embs[0]['embedding'])
           return face      
         
