@@ -46,30 +46,34 @@ def danhsach():
     with tab1:
         col1, col2, col3, col4 = st.columns(4)  # tạo các ô lựa chọn
         x=-1
-        gender = None
+        run=False
         with col1:
             x = 10
             st.write("Giới tính")
             Nam = st.checkbox('Nam')
             Nu = st.checkbox('Nữ')
             if Nam and Nu:
-                x = 0
+                x=0
+                run=True
             elif Nu:
                 gender = "F"
+                run=True
             elif Nam:
                 gender = "M"
+                run=True
         with col2:
             grade = st.radio("Khối lớp",("Tất cả", "Lớp 10", "Lớp 11", "Lớp 12"), index = None)
             if grade != "Tất cả" and x == 0:
                 x = 1
             elif grade == "Tất cả" and x == 0:
                 x = 2
-
+            if grade== "Tất cả":
+                grade= None
             if grade == "Lớp 10":
                 grade = '10'
-            if grade == "Lớp 11":
+            elif grade == "Lớp 11":
                 grade = '11'
-            if grade == "Lớp 12":
+            elif grade == "Lớp 12":
                 grade = '12'
         with col3:
             a=0
@@ -131,7 +135,7 @@ def danhsach():
             if not khac:
                 chuyen.remove('Khác')
         if st.button("Run"):
-            if x != -1 and gender is not None and len(chuyen) > 0:
+            if x != -1 and run==True and len(chuyen) > 0:
                 if x == 2:
                     if phong is None: 
                         if buoi is None: df1 = df[(df['CLASS-GROUP'].isin(chuyen))]
@@ -147,12 +151,36 @@ def danhsach():
                         if buoi is None: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
                         else: df1 = df[(df['CLASS'].str.startswith(grade)) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
                 else:
-                    if phong is None: 
-                        if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen))]
-                        else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
+                    if phong is None:
+                        if gender is None:
+                            if grade is None:
+                                if buoi is None: df1 = df[(df['CLASS-GROUP'].isin(chuyen))]
+                                else: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))] 
+                            else:
+                                if buoi is None: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['CLASS'].str.startswith(grade))]
+                                else: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['CLASS'].str.startswith(grade))]
+                        else:
+                            if grade is None:
+                                if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen))]
+                                else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi))]
+                            else:
+                                if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['CLASS'].str.startswith(grade))]
+                                else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['CLASS'].str.startswith(grade))]
                     else: 
-                        if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
-                        else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                        if grade is None:
+                            if gender is None: 
+                                if buoi is None: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                                else: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                            else:
+                                if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                                else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong))]
+                        else:
+                            if gender is None: 
+                                if buoi is None: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong)) & (df['CLASS'].str.startswith(grade))]
+                                else: df1 = df[(df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong)) & (df['CLASS'].str.startswith(grade))]
+                            else:
+                                if buoi is None: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.startswith(phong)) & (df['CLASS'].str.startswith(grade))]
+                                else: df1 = df[(df['GENDER'] == gender) & (df['CLASS-GROUP'].isin(chuyen)) & (df['PYTHON-CLASS'].str.endswith(buoi)) & (df['PYTHON-CLASS'].str.startswith(phong)) & (df['CLASS'].str.startswith(grade))]
                 st.write('Số HS: ', len(df1), '(',len(df1[df1['GENDER']== 'M']), 'Nam',len(df1[df1['GENDER']== 'F']),'Nữ' , ')')
                 st.write('GPA: cao nhất', np.max(df1['GPA']), 'thấp nhất', np.min(df1['GPA']), 'trung bình', round(np.mean(df1['GPA']), 1))
                 st.dataframe(df1)
