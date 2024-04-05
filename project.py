@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from deepface import DeepFace
 from PIL import Image
+from sklearn.cluster import KMeans
 
 df = pd.read_csv('https://raw.githubusercontent.com/xuanntruong/mc4ai-project/main/dataset.csv', index_col=None)
 df.head()
@@ -16,7 +17,7 @@ for i in range(1, 11):
     df[a].fillna(0, inplace=True)
 df['BONUS'].fillna(0, inplace=True)
 df['REG-MC4AI'].fillna('N', inplace=True)   # fill none
-
+df["S-AVG"] = (df["S1"] + df["S2"] + df["S3"] + df["S4"] + df["S5"] + df["S7"] + df["S8"] + df["S9"]) / 8
 
 def lop(row):
     if 'CV' in row['CLASS']:
@@ -230,9 +231,58 @@ def bieudo():
                     st.write('100% các học sinh khối chuyên toán, văn, lý, tin và lớp thường đậu')
         
         st.bar_chart(df, x="CLASS-GROUP", y="GPA", color="GENDER")
-with tab3:
-   st.header("An owl")
-   st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
+def phannhom():
+  with tab3:
+        col1, col2 = st.columns(2)
+        with col1:
+            group = st.slider("Số nhóm", 2, 5)
+        with col2:
+            options = st.multiselect('Chọn đặc trưng', ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S-AVG', 'GPA'],
+                                     ['S6', 'S10', 'S-AVG'], max_selections=3)
+        
+        X = df[options].values
+        kmeans = KMeans(n_clusters=group, n_init='auto')
+        kmeans.fit(X)
+        labels = kmeans.predict(X)  # Get the cluster labels for each data point
+        
+        
+        if len(options) == 3:
+            fig = go.Figure(data = [go.Scatter3d(x=X[:,0], y=X[:,1], z=X[:,2], mode='markers', marker=dict(color=labels))])
+            fig.update_layout(
+            scene=dict(
+            xaxis=dict(title=options[0]),
+            yaxis=dict(title=options[1]),
+            zaxis=dict(title=options[2])
+            )
+            )
+            st.plotly_chart(fig)
+            for i in range(group):
+                col3, col4 = st.columns(2)
+                with col3:
+                    st.write(f"Nhóm {i+1}")
+                    st.write(f"GPA cao nhất: {max(X[i])}")
+                    st.write(f"GPA thấp nhất: {min(X[i])}")
+                    st.write(f"GPA trung bình: {round(np.mean(X[i]), 2)}")
+                    filter = df[labels==i]  # Filter dataframe based on cluster labels
+                    st.dataframe(filter)
+                with col4:
+                    fig = go.Figure(data = [go.Scatter3d(x=X[labels==i][:,0], y=X[labels==i][:,1], z=X[labels==i][:,2], mode='markers', marker=dict(color=labels[labels==i]))])
+                    fig.update_layout(
+                    scene=dict(
+                    xaxis=dict(title=options[0]),
+                    yaxis=dict(title=options[1]),
+                    zaxis=dict(title=options[2])
+                    )
+                    )
+                st.plotly_chart(fig)
+        elif len(options)== 2:
+            fig = go.Figure(data = [go.Scatter(x=X[:,0], y=X[:,1], mode='markers', marker=dict(color=labels))],layout=go.Layout({'showlegend':True, 'xaxis_title':options[0], 'yaxis_title':options[1]}))
+            for i in range(group):
+                st.write(f"Nhóm {i+1}")
+                st.write(f"GPA cao nhất: {max(X[i])}")
+                st.write(f"GPA thấp nhất: {min(X[i])}")
+                st.write(f"GPA trung bình: {round(np.mean(X[i]), 2)}")
+            st.plotly_chart(fig)
 
 def xemdiem():
   with tab5:
@@ -266,4 +316,5 @@ def xemdiem():
 
 danhsach()
 bieudo()
+phannhom()
 xemdiem()
