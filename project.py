@@ -353,10 +353,10 @@ def phanloai():
                 x2=-(w1/w2)*x1-b/w2
             else:
                 x2=-(w1)*x1-b
-            fig = go.Figure()
-            fig.add_trace(go.Scatter(x=x[y == 0, 0], y=x[y == 0, 0], mode='markers'))
-            fig.add_trace(go.Scatter(x=x[y == 1, 0], y=x[y == 1, 0], mode='markers'))
-            fig.add_trace(go.Scatter(x=x1, y=x2, mode='lines'))
+            fig = go.Figure(data=[
+                go.Scatter(x=x[y == 0, 0], y=x[y == 0, 0], mode='markers'),
+                go.Scatter(x=x[y == 1, 0], y=x[y == 1, 0], mode='markers'),
+                go.Scatter(x=x1, y=x2, mode='lines')])
             fig.update_layout(
                 title='Logistic Regression',
                 xaxis_title=dac_trung[1],
