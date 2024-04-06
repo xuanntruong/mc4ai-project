@@ -16,7 +16,8 @@ Chức năng|Người thực hiện|Quá trình
 Danh sách học sinh|Trường, Vinh|Xong
 Phân tích số lượng học sinh|Trường, Vinh|Xong
 Phân tích điểm thi|Trường|Xong
-Clustering|Truyền Anh|Chưa
-Regression|Truyền Anh|Chưa
-Classify|Truyền Anh|Chưa
+Clustering|Truyền Anh|Xong
+Regression|Truyền Anh|Xong
+Classify|Truyền Anh|Xong
 Nhận diện khuôn mặt|Trường|Xong
+Decision boundary|Vinh|Xong
