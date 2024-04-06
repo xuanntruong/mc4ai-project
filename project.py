@@ -45,7 +45,7 @@ def lop(row):
 df['CLASS-GROUP'] = df.apply(lop, axis=1) # thêm phân loại lớp chuyên
 
   # tạo các tab
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Danh sách", "Biểu đồ", "Phân nhóm", "Phân loại", "xem điểm bằng gương mặt"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Danh sách", "Biểu đồ", "Phân nhóm", "Phân loại", "Xem điểm bằng gương mặt"])
 def danhsach():
     with tab1:
         col1, col2, col3, col4 = st.columns(4)  # tạo các ô lựa chọn
@@ -54,8 +54,8 @@ def danhsach():
         with col1:
             x = 10
             st.write("Giới tính")
-            Nam = st.checkbox('Nam')
-            Nu = st.checkbox('Nữ')
+            Nam = st.checkbox('Nam',value=True)
+            Nu = st.checkbox('Nữ',value=True)
             if Nam and Nu:
                 x=0
                 run=True
@@ -66,7 +66,7 @@ def danhsach():
                 gender = "M"
                 run=True
         with col2:
-            grade = st.radio("Khối lớp",("Tất cả", "Lớp 10", "Lớp 11", "Lớp 12"), index = None)
+            grade = st.radio("Khối lớp",["Tất cả", "Lớp 10", "Lớp 11", "Lớp 12"], index = 0)
             if grade != "Tất cả" and x == 0:
                 x = 1
             elif grade == "Tất cả" and x == 0:
@@ -81,7 +81,7 @@ def danhsach():
                 grade = '12'
         with col3:
             a=0
-            phong = st.selectbox("phòng",("Tất cả","A114","A115"))
+            phong = st.selectbox("phòng",["Tất cả","A114","A115"],index=0)
             if phong == "A114":
                 phong = '114'
             if phong =="Tất cả":
@@ -90,7 +90,7 @@ def danhsach():
                 phong = '115'
 
         with col4:
-            buoi = st.multiselect("Buổi",("Sáng","Chiều"))
+            buoi = st.multiselect("Buổi",["Sáng","Chiều"],["Sáng","Chiều"])
             if buoi == "Sáng":
                 buoi = "S"
             if buoi == ["Sáng","Chiều"]:
@@ -104,40 +104,41 @@ def danhsach():
         col1, col2, col3, col4, col5  = st.columns(5) # các ô lựa chọn
         with col1:
             chuyen = ['Văn', 'Toán', 'Lý', 'Hóa', 'Anh', 'Tin', 'Sử Địa','Trung Nhật', 'TH/SN', 'Khác']
-            van = st.checkbox('Văn')
-            toan = st.checkbox('Toán')
+            van = st.checkbox('Văn',value=True)
+            toan = st.checkbox('Toán',value=True)
             if not van:
                 chuyen.remove('Văn')
             if not toan:
                 chuyen.remove('Toán')
         with col2:
-            ly = st.checkbox('Lý')
-            hoa = st.checkbox('Hóa')
+            ly = st.checkbox('Lý',value=True)
+            hoa = st.checkbox('Hóa',value=True)
             if not ly:
                 chuyen.remove('Lý')
             if not hoa:
                 chuyen.remove('Hóa')
         with col3:
-            anh = st.checkbox('Anh')
-            tin = st.checkbox('Tin')
+            anh = st.checkbox('Anh',value=True)
+            tin = st.checkbox('Tin',value=True)
             if not anh:
                 chuyen.remove('Anh')
             if not tin:
                 chuyen.remove('Tin')
         with col4:
-            sudia = st.checkbox('Sử Địa')
-            trungnhat = st.checkbox('Trung Nhật')
+            sudia = st.checkbox('Sử Địa',value=True)
+            trungnhat = st.checkbox('Trung Nhật',value=True)
             if not sudia:
                 chuyen.remove('Sử Địa')
             if not trungnhat:
                 chuyen.remove('Trung Nhật')
         with col5:
-            th = st.checkbox('TH/SN')
-            khac = st.checkbox('Khác')
+            th = st.checkbox('TH/SN',value=True)
+            khac = st.checkbox('Khác',value=True)
             if not th:
                 chuyen.remove('TH/SN')
             if not khac:
                 chuyen.remove('Khác')
+
         if st.button("Run"):
             if x != -1 and run==True and len(chuyen) > 0:
                 if x == 2:
