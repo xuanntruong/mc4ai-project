@@ -237,66 +237,66 @@ def bieudo():
 def phannhom():
     with tab3:
         col1, col2 = st.columns(2)
-    with col1:
-        group = st.slider("Số nhóm", 2, 5)
-    with col2:
-        options = st.multiselect('Chọn đặc trưng', ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S-AVG', 'GPA'],
-                                 ['S6', 'S10', 'GPA'], max_selections=3)
+        with col1:
+            group = st.slider("Số nhóm", 2, 5)
+        with col2:
+            options = st.multiselect('Chọn đặc trưng', ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S-AVG', 'GPA'],
+                                    ['S6', 'S10', 'GPA'], max_selections=3)
 
-    X = df[options].values
-    kmeans = KMeans(n_clusters=group, n_init='auto')
-    kmeans.fit(X)
-    labels = kmeans.predict(X)
-    cluster = kmeans.cluster_centers_
+        X = df[options].values
+        kmeans = KMeans(n_clusters=group, n_init='auto')
+        kmeans.fit(X)
+        labels = kmeans.predict(X)
+        cluster = kmeans.cluster_centers_
 
-    if len(options) == 3:
-        fig = go.Figure(data=[go.Scatter3d(x=X[:,0], y=X[:,1], z=X[:,2], mode='markers', marker=dict(color=labels))])
-        fig.update_layout(
-        scene=dict(
-        xaxis=dict(title=options[0]),
-        yaxis=dict(title=options[1]),
-        zaxis=dict(title=options[2])
-        )
-        )
-        st.plotly_chart(fig)
-        colour= ["yellow", "red", "blue", "black", "purple"]
-        for i in range(group):
-            col3, col4 = st.columns(2)
-            with col3:
-                st.write(f"Nhóm {i+1}")
-                st.write(f"GPA cao nhất{max(X[i])}")
-                st.write(f"GPA cao nhất{min(X[i])}")
-                st.write(f"GPA cao nhất{round(np.mean(X[i]), 2)}")
-                filter = df[labels==i]
-                filter = filter[[options[0], options[1], options[2]]]
-                st.dataframe(filter)
-            with col4:
-                fig = go.Figure(data = [go.Scatter3d(x=filter[options[0]], y=filter[options[1]], z=filter[options[2]], mode='markers', marker=dict(color=colour[i]))])
-                fig.update_layout(
-                scene=dict(
-                xaxis=dict(title=options[0]),
-                yaxis=dict(title=options[1]),
-                zaxis=dict(title=options[2])
-                )
-                )
-
+        if len(options) == 3:
+            fig = go.Figure(data=[go.Scatter3d(x=X[:,0], y=X[:,1], z=X[:,2], mode='markers', marker=dict(color=labels))])
+            fig.update_layout(
+            scene=dict(
+            xaxis=dict(title=options[0]),
+            yaxis=dict(title=options[1]),
+            zaxis=dict(title=options[2])
+            )
+            )
             st.plotly_chart(fig)
-    elif len(options)== 2:
-        fig = go.Figure(data = [go.Scatter(x=X[:,0], y=X[:,1], mode='markers', marker=dict(color=labels))],layout=go.Layout({'showlegend':True, 'xaxis_title':options[0], 'yaxis_title':options[1]}))
-        st.plotly_chart(fig)
-        for i in range(group):
-            col5, col6 = st.columns(2)
-            with col5:
-                st.write(f"Nhóm {i+1}")
-                st.write(f"GPA cao nhất{max(X[i])}")
-                st.write(f"GPA cao nhất{min(X[i])}")
-                st.write(f"GPA cao nhất{round(np.mean(X[i]), 2)}")
-                filter = df[labels==i]
-                filter = filter[[options[0], options[1]]]
-                st.dataframe(filter)
-            with col6:
-                fig = go.Figure(data = [go.Scatter(x=filter[options[0]], y=filter[options[1]], mode='markers', marker=dict(color=labels))],layout=go.Layout({'xaxis_title':options[0], 'yaxis_title':options[1]}))
+            colour= ["yellow", "red", "blue", "black", "purple"]
+            for i in range(group):
+                col3_, col4_ = st.columns(2)
+                with col3_:
+                    st.write(f"Nhóm {i+1}")
+                    st.write(f"GPA cao nhất: {max(X[i])}")
+                    st.write(f"GPA thấp nhất: {min(X[i])}")
+                    st.write(f"GPA trung bình: {round(np.mean(X[i]), 2)}")
+                    filter = df[labels==i]
+                    filter = filter[[options[0], options[1], options[2]]]
+                    st.dataframe(filter)
+                with col4_:
+                    fig = go.Figure(data = [go.Scatter3d(x=filter[options[0]], y=filter[options[1]], z=filter[options[2]], mode='markers', marker=dict(color=colour[i]))])
+                    fig.update_layout(
+                    scene=dict(
+                    xaxis=dict(title=options[0]),
+                    yaxis=dict(title=options[1]),
+                    zaxis=dict(title=options[2])
+                    )
+                    )
+
                 st.plotly_chart(fig)
+        elif len(options)== 2:
+            fig = go.Figure(data = [go.Scatter(x=X[:,0], y=X[:,1], mode='markers', marker=dict(color=labels))],layout=go.Layout({'showlegend':True, 'xaxis_title':options[0], 'yaxis_title':options[1]}))
+            st.plotly_chart(fig)
+            for i in range(group):
+                col5, col6 = st.columns(2)
+                with col5:
+                    st.write(f"Nhóm {i+1}")
+                    st.write(f"GPA cao nhất: {max(X[i])}")
+                    st.write(f"GPA thấp nhất: {min(X[i])}")
+                    st.write(f"GPA trung bình: {round(np.mean(X[i]), 2)}")
+                    filter = df[labels==i]
+                    filter = filter[[options[0], options[1]]]
+                    st.dataframe(filter)
+                with col6:
+                    fig = go.Figure(data = [go.Scatter(x=filter[options[0]], y=filter[options[1]], mode='markers', marker=dict(color=labels))],layout=go.Layout({'xaxis_title':options[0], 'yaxis_title':options[1]}))
+                    st.plotly_chart(fig)
 def phanloai():
     with tab4:
         dac_trung = st.multiselect("Chọn đặc trưng: ", ['S1', 'S2', 'S3', 'S4', 'S5', 'S6',
@@ -367,30 +367,34 @@ def xemdiem():
   with tab5:
       def cosine_similarity(vector_a, vector_b): # hàm tính cosine similarity
           dot_product = np.dot(vector_a, vector_b)
-
+  
           norm_a = np.linalg.norm(vector_a)
           norm_b = np.linalg.norm(vector_b)
-
+  
           cosine_similarity = dot_product / (norm_a * norm_b)
-
+  
           return cosine_similarity
-
+    
       def detectface(img): # lấy ra vector mặt
-          embs = DeepFace.represent(img)
+          embs = DeepFace.represent(img, enforce_detection=False)
           face = np.array(embs[0]['embedding'])
-          return face
+          return face      
+      list_hs = [0]
+
+      img1 = Image.open("Xtruong.jpg") # lấy ảnh để so sánh
+      img1 = np.array(img1)  
+      list_hs.append(img1)
 
       img_file_buffer = st.camera_input("Take a picture")
       if img_file_buffer is not None:
-          img = Image.open(img_file_buffer)
-          img_array = np.array(img) # chuyển ảnh đã chụp sang dạng ma trận
-
-          img1 = Image.open("Xtruong.jpg") # lấy ảnh để so sánh
-          img1 = np.array(img1)
-
-          st.write('Độ tự tin', cosine_similarity(detectface(img1), detectface(img_array)))
-          if cosine_similarity(detectface(img1), detectface(img_array)) >= 0.5:
-              st.dataframe(df.iloc[[-1]])
+        img = Image.open(img_file_buffer)
+        img_array = np.array(img) # chuyển ảnh đã chụp sang dạng ma trận
+  
+          
+        for i in range(1, len(list_hs)):  
+            if cosine_similarity(detectface(list_hs[i]), detectface(img_array)) >= 0.5:
+                st.write('Độ tự tin', round(cosine_similarity(detectface(list_hs[i]), detectface(img_array)), 2))
+                st.dataframe(df.iloc[[-i]])
 
 
 danhsach()
