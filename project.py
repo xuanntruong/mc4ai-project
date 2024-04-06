@@ -81,7 +81,7 @@ def danhsach():
                 grade = '12'
         with col3:
             a=0
-            phong = st.selectbox("phòng",["Tất cả","A114","A115"],index=0)
+            phong = st.selectbox("Phòng",["Tất cả","A114","A115"],index=0)
             if phong == "A114":
                 phong = '114'
             if phong =="Tất cả":
