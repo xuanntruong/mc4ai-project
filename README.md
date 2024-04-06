@@ -3,7 +3,7 @@ Họ Tên|Lớp|Email
 -|-|-
 Lê Vũ Xuân Trường|10CL1|levuxuantruong2008@gmail.com
 Thạch Truyền Anh|10CT2|
-Trần Tiến Vinh||
+Trần Tiến Vinh|10A2|vinh.trantien0912@gmail.com
 
 # Thông tin project
 ## Đề tài: Phân tích điểm thi lớp Python4AI 092022
