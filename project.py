@@ -81,7 +81,7 @@ def danhsach():
                 grade = '12'
         with col3:
             a=0
-            phong = st.selectbox("Phòng",["Tất cả","A114","A115"],index=0)
+            phong = st.selectbox("phòng",["Tất cả","A114","A115"],index=0)
             if phong == "A114":
                 phong = '114'
             if phong =="Tất cả":
@@ -138,7 +138,6 @@ def danhsach():
                 chuyen.remove('TH/SN')
             if not khac:
                 chuyen.remove('Khác')
-
         if st.button("Run"):
             if x != -1 and run==True and len(chuyen) > 0:
                 if x == 2:
@@ -262,16 +261,16 @@ def phannhom():
             st.plotly_chart(fig)
             colour= ["yellow", "red", "blue", "black", "purple"]
             for i in range(group):
-                col3_, col4_ = st.columns(2)
-                with col3_:
+                col3, col4 = st.columns(2)
+                with col3:
                     st.write(f"Nhóm {i+1}")
-                    st.write(f"GPA cao nhất: {max(X[i])}")
-                    st.write(f"GPA thấp nhất: {min(X[i])}")
-                    st.write(f"GPA trung bình: {round(np.mean(X[i]), 2)}")
+                    st.write(f"GPA cao nhất{max(X[i])}")
+                    st.write(f"GPA cao nhất{min(X[i])}")
+                    st.write(f"GPA cao nhất{round(np.mean(X[i]), 2)}")
                     filter = df[labels==i]
                     filter = filter[[options[0], options[1], options[2]]]
                     st.dataframe(filter)
-                with col4_:
+                with col4:
                     fig = go.Figure(data = [go.Scatter3d(x=filter[options[0]], y=filter[options[1]], z=filter[options[2]], mode='markers', marker=dict(color=colour[i]))])
                     fig.update_layout(
                     scene=dict(
@@ -289,9 +288,9 @@ def phannhom():
                 col5, col6 = st.columns(2)
                 with col5:
                     st.write(f"Nhóm {i+1}")
-                    st.write(f"GPA cao nhất: {max(X[i])}")
-                    st.write(f"GPA thấp nhất: {min(X[i])}")
-                    st.write(f"GPA trung bình: {round(np.mean(X[i]), 2)}")
+                    st.write(f"GPA cao nhất{max(X[i])}")
+                    st.write(f"GPA cao nhất{min(X[i])}")
+                    st.write(f"GPA cao nhất{round(np.mean(X[i]), 2)}")
                     filter = df[labels==i]
                     filter = filter[[options[0], options[1]]]
                     st.dataframe(filter)
@@ -340,7 +339,7 @@ def phanloai():
             accuracy = accuracy_score(y, y_test_pred)
             st.write("Độ chính xác: ", round(accuracy, 2))
         elif len(dac_trung)==2:
-            threshold = 5  # Threshold value to determine the class labels
+            threshold = 5
             x= np.where(df[dac_trung[0]]>= threshold,1,0).reshape(-1,1)
             y = np.where(df[dac_trung[1]] >= threshold, 1, 0)
             model = LogisticRegression()
@@ -363,39 +362,35 @@ def phanloai():
                 xaxis_title=dac_trung[1],
                 yaxis_title=dac_trung[0])
             st.plotly_chart(fig)
-
+        else: st.write('Vui lòng chọn thêm')
 def xemdiem():
   with tab5:
       def cosine_similarity(vector_a, vector_b): # hàm tính cosine similarity
           dot_product = np.dot(vector_a, vector_b)
-  
+
           norm_a = np.linalg.norm(vector_a)
           norm_b = np.linalg.norm(vector_b)
-  
-          cosine_similarity = dot_product / (norm_a * norm_b)
-  
-          return cosine_similarity
-    
-      def detectface(img): # lấy ra vector mặt
-          embs = DeepFace.represent(img, enforce_detection=False)
-          face = np.array(embs[0]['embedding'])
-          return face      
-      list_hs = [0]
 
-      img1 = Image.open("Xtruong.jpg") # lấy ảnh để so sánh
-      img1 = np.array(img1)  
-      list_hs.append(img1)
+          cosine_similarity = dot_product / (norm_a * norm_b)
+
+          return cosine_similarity
+
+      def detectface(img): # lấy ra vector mặt
+          embs = DeepFace.represent(img)
+          face = np.array(embs[0]['embedding'])
+          return face
 
       img_file_buffer = st.camera_input("Take a picture")
       if img_file_buffer is not None:
-        img = Image.open(img_file_buffer)
-        img_array = np.array(img) # chuyển ảnh đã chụp sang dạng ma trận
-  
-          
-        for i in range(1, len(list_hs)):  
-            if cosine_similarity(detectface(list_hs[i]), detectface(img_array)) >= 0.5:
-                st.write('Độ tự tin', round(cosine_similarity(detectface(list_hs[i]), detectface(img_array)), 2))
-                st.dataframe(df.iloc[[-i]])
+          img = Image.open(img_file_buffer)
+          img_array = np.array(img) # chuyển ảnh đã chụp sang dạng ma trận
+
+          img1 = Image.open("Xtruong.jpg") # lấy ảnh để so sánh
+          img1 = np.array(img1)
+
+          st.write('Độ tự tin', cosine_similarity(detectface(img1), detectface(img_array)))
+          if cosine_similarity(detectface(img1), detectface(img_array)) >= 0.5:
+              st.dataframe(df.iloc[[-1]])
 
 
 danhsach()
